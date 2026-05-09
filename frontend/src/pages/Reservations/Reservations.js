@@ -121,37 +121,42 @@ App.registerPage('reservations', {
   },
 
   save() {
-    const user = Auth.getUser();
-    const reservas = DB.get('reservas') || [];
-    const data = {
-      clienteNombre: document.getElementById('res-cliente').value.trim(),
-      fecha: document.getElementById('res-fecha').value,
-      hora: document.getElementById('res-hora').value,
-      personas: parseInt(document.getElementById('res-personas').value) || 1,
-      email: document.getElementById('res-email').value.trim(),
-      notas: document.getElementById('res-notas').value.trim(),
-    };
-    if (!data.clienteNombre) { App.showToast('El nombre es obligatorio', 'error'); return; }
-    if (!data.fecha || !data.hora) { App.showToast('Fecha y hora son obligatorias', 'error'); return; }
+    try {
+      const user = Auth.getUser();
+      const reservas = DB.get('reservas') || [];
+      const data = {
+        clienteNombre: document.getElementById('res-cliente').value.trim(),
+        fecha: document.getElementById('res-fecha').value,
+        hora: document.getElementById('res-hora').value,
+        personas: parseInt(document.getElementById('res-personas').value) || 1,
+        email: document.getElementById('res-email').value.trim(),
+        notas: document.getElementById('res-notas').value.trim(),
+      };
+      if (!data.clienteNombre) { App.showToast('El nombre es obligatorio', 'error'); return; }
+      if (!data.fecha || !data.hora) { App.showToast('Fecha y hora son obligatorias', 'error'); return; }
 
-    const reserva = {
-      id: DB.nextId('reservas'),
-      ...data,
-      usuarioId: user.id,
-      estado: 'pendiente',
-      creada: new Date().toISOString(),
-    };
-    reservas.push(reserva);
-    DB.set('reservas', reservas);
-    App.showToast('Reserva creada exitosamente');
-    Modal.close();
-    App.renderPage('reservations');
+      const reserva = {
+        id: DB.nextId('reservas'),
+        ...data,
+        usuarioId: user.id,
+        estado: 'pendiente',
+        creada: new Date().toISOString(),
+      };
+      reservas.push(reserva);
+      DB.set('reservas', reservas);
+      App.showToast('Reserva creada exitosamente');
+      Modal.close();
+      App.renderPage('reservations');
+    } catch (e) {
+      console.error('Error saving reservation:', e);
+      App.showToast('Error al guardar: ' + e.message, 'error');
+    }
   },
 
   cancel(id) {
     if (!confirm('¿Cancelar esta reserva?')) return;
-    const reservas = DB.get('reservas');
-    const r = reservas.find(res => res.id === id);
+    const reservas = DB.get('reservas') || [];
+    const r = reservas.find(res => res.id === Number(id));
     if (r) { r.estado = 'cancelada'; DB.set('reservas', reservas); }
     App.showToast('Reserva cancelada');
     App.renderPage('reservations');

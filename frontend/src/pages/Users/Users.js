@@ -48,7 +48,8 @@ App.registerPage('users', {
   },
 
   edit(id) {
-    const usuarios = DB.get('usuarios');
+    id = Number(id);
+    const usuarios = DB.get('usuarios') || [];
     const user = usuarios.find(u => u.id === id);
     if (user) this.showForm(user);
   },
@@ -79,46 +80,53 @@ App.registerPage('users', {
           </select>
         </div>
       `,
-      onConfirm: () => UsersPage.save(isEdit ? user.id : null, isEdit ? user : null),
+      onConfirm: () => UsersPage.save(isEdit ? user.id : null),
     });
   },
 
-  save(id, oldUser) {
-    const usuarios = DB.get('usuarios');
-    const data = {
-      nombre: document.getElementById('user-nombre').value.trim(),
-      email: document.getElementById('user-email').value.trim(),
-      rol: document.getElementById('user-rol').value,
-      password: document.getElementById('user-password').value,
-    };
-    if (!data.nombre || !data.email) { App.showToast('Nombre y email son obligatorios', 'error'); return; }
-    if (!id && !data.password) { App.showToast('La contraseña es obligatoria', 'error'); return; }
+  save(id) {
+    try {
+      const usuarios = DB.get('usuarios') || [];
+      const data = {
+        nombre: document.getElementById('user-nombre').value.trim(),
+        email: document.getElementById('user-email').value.trim(),
+        rol: document.getElementById('user-rol').value,
+        password: document.getElementById('user-password').value,
+      };
+      if (!data.nombre || !data.email) { App.showToast('Nombre y email son obligatorios', 'error'); return; }
+      if (!id && !data.password) { App.showToast('La contraseña es obligatoria', 'error'); return; }
 
-    if (id) {
-      const idx = usuarios.findIndex(u => u.id === id);
-      if (idx !== -1) {
-        usuarios[idx].nombre = data.nombre;
-        usuarios[idx].email = data.email;
-        usuarios[idx].rol = data.rol;
-        if (data.password) usuarios[idx].password = data.password;
+      if (id) {
+        id = Number(id);
+        const idx = usuarios.findIndex(u => u.id === id);
+        if (idx !== -1) {
+          usuarios[idx].nombre = data.nombre;
+          usuarios[idx].email = data.email;
+          usuarios[idx].rol = data.rol;
+          if (data.password) usuarios[idx].password = data.password;
+          App.showToast('Usuario actualizado');
+        }
+      } else {
+        data.id = DB.nextId('usuarios');
+        usuarios.push(data);
+        App.showToast('Usuario creado');
       }
-      App.showToast('Usuario actualizado');
-    } else {
-      data.id = DB.nextId('usuarios');
-      usuarios.push(data);
-      App.showToast('Usuario creado');
+      DB.set('usuarios', usuarios);
+      Modal.close();
+      App.renderPage('users');
+    } catch (e) {
+      console.error('Error saving user:', e);
+      App.showToast('Error al guardar: ' + e.message, 'error');
     }
-    DB.set('usuarios', usuarios);
-    Modal.close();
-    App.renderPage('users');
   },
 
   remove(id) {
+    id = Number(id);
     const user = Auth.getUser();
-    if (user.id === id) { App.showToast('No puedes eliminarte a ti mismo', 'error'); return; }
+    if (Number(user.id) === id) { App.showToast('No puedes eliminarte a ti mismo', 'error'); return; }
     if (!confirm('¿Eliminar este usuario?')) return;
-    const usuarios = DB.get('usuarios');
-    DB.set('usuarios', usuarios.filter(u => u.id !== id));
+    const usuarios = DB.get('usuarios') || [];
+    DB.set('usuarios', usuarios.filter(u => Number(u.id) !== id));
     App.showToast('Usuario eliminado');
     App.renderPage('users');
   },

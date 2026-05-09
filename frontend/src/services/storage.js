@@ -65,7 +65,7 @@ const DB = {
     this.set('pedidos', pedidos);
     this.set('reservas', []);
     this.set('facturas', facturas);
-    this.set('nextId', { productos: 10, pedidos: 2, reservas: 1, facturas: 2 });
+    this.set('nextId', { usuarios: 4, categorias: 5, productos: 10, mesas: 7, pedidos: 2, reservas: 1, facturas: 2 });
     this.set('seed_initialized', true);
   },
 
@@ -77,5 +77,19 @@ const DB = {
     return id;
   },
 };
+
+// Ensure nextId has all required keys (handles migration for existing localStorage)
+const NEXT_ID_KEYS = { usuarios: 4, categorias: 5, productos: 10, mesas: 7, pedidos: 2, reservas: 1, facturas: 2 };
+const existingNextId = DB.get('nextId');
+if (existingNextId) {
+  let changed = false;
+  for (const [key, val] of Object.entries(NEXT_ID_KEYS)) {
+    if (!(key in existingNextId)) {
+      existingNextId[key] = val;
+      changed = true;
+    }
+  }
+  if (changed) DB.set('nextId', existingNextId);
+}
 
 DB.seed();

@@ -104,41 +104,48 @@ App.registerPage('menu', {
   },
 
   edit(id) {
-    const productos = DB.get('productos');
+    id = Number(id);
+    const productos = DB.get('productos') || [];
     const product = productos.find(p => p.id === id);
     if (product) this.showForm(product);
   },
 
   save(id) {
-    const productos = DB.get('productos');
-    const data = {
-      nombre: document.getElementById('prod-nombre').value.trim(),
-      descripcion: document.getElementById('prod-descripcion').value.trim(),
-      precio: parseInt(document.getElementById('prod-precio').value) || 0,
-      categoriaId: parseInt(document.getElementById('prod-categoria').value),
-      disponible: document.getElementById('prod-disponible').checked,
-    };
-    if (!data.nombre) { App.showToast('El nombre es obligatorio', 'error'); return; }
-    if (data.precio <= 0) { App.showToast('El precio debe ser mayor a 0', 'error'); return; }
+    try {
+      const productos = DB.get('productos') || [];
+      const data = {
+        nombre: document.getElementById('prod-nombre').value.trim(),
+        descripcion: document.getElementById('prod-descripcion').value.trim(),
+        precio: parseInt(document.getElementById('prod-precio').value) || 0,
+        categoriaId: parseInt(document.getElementById('prod-categoria').value),
+        disponible: document.getElementById('prod-disponible').checked,
+      };
+      if (!data.nombre) { App.showToast('El nombre es obligatorio', 'error'); return; }
+      if (data.precio <= 0) { App.showToast('El precio debe ser mayor a 0', 'error'); return; }
 
-    if (id) {
-      const idx = productos.findIndex(p => p.id === id);
-      if (idx !== -1) { productos[idx] = { ...productos[idx], ...data }; }
-      App.showToast('Producto actualizado');
-    } else {
-      data.id = DB.nextId('productos');
-      productos.push(data);
-      App.showToast('Producto creado');
+      if (id) {
+        id = Number(id);
+        const idx = productos.findIndex(p => p.id === id);
+        if (idx !== -1) { productos[idx] = { ...productos[idx], ...data }; }
+        App.showToast('Producto actualizado');
+      } else {
+        data.id = DB.nextId('productos');
+        productos.push(data);
+        App.showToast('Producto creado');
+      }
+      DB.set('productos', productos);
+      Modal.close();
+      App.renderPage('menu');
+    } catch (e) {
+      console.error('Error saving product:', e);
+      App.showToast('Error al guardar: ' + e.message, 'error');
     }
-    DB.set('productos', productos);
-    Modal.close();
-    App.renderPage('menu');
   },
 
   remove(id) {
     if (!confirm('¿Eliminar este producto?')) return;
-    const productos = DB.get('productos');
-    DB.set('productos', productos.filter(p => p.id !== id));
+    const productos = DB.get('productos') || [];
+    DB.set('productos', productos.filter(p => p.id !== Number(id)));
     App.showToast('Producto eliminado');
     App.renderPage('menu');
   },
