@@ -310,6 +310,6 @@ App.registerPage('orders', {
     App.renderPage('orders');
     App.showToast(`Factura #${factura.id} generada - Total: $${factura.total.toLocaleString()}`);
   },
-};
+});
 
 window.OrdersPage = App.pages.orders;

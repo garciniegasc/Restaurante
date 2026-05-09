@@ -148,6 +148,6 @@ App.registerPage('menu', {
     App.renderPage('menu');
     App.showToast('Producto eliminado');
   },
-};
+});
 
 window.MenuPage = App.pages.menu;
