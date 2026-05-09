@@ -39,7 +39,7 @@ App.registerPage('menu', {
   },
 
   renderRows(productos, categorias, esAdmin) {
-    if (!productos.length) return '<tr><td colspan="5" class="text-center text-muted">No hay productos registrados</td></tr>';
+    if (!productos.length) return `<tr><td colspan="${esAdmin ? 5 : 4}" class="text-center text-muted">No hay productos registrados</td></tr>`;
     return productos.map(p => {
       const cat = categorias.find(c => c.id === p.categoriaId);
       return `<tr data-cat="${p.categoriaId}">
