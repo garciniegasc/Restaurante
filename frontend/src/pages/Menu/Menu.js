@@ -1,3 +1,4 @@
+console.log('Menu.js executing');
 App.registerPage('menu', {
   title: 'Menú',
   allowedRoles: ['admin', 'mesero', 'cliente'],
@@ -151,3 +152,4 @@ App.registerPage('menu', {
 };
 
 window.MenuPage = App.pages.menu;
+console.log('Menu.js done, App.pages.menu:', !!App.pages.menu);

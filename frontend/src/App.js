@@ -10,6 +10,7 @@ const App = {
     Auth.init();
     Store.init();
     this.buildShell();
+    console.log('Pages registered:', Object.keys(this.pages).join(', '));
     window.addEventListener('hashchange', () => this.handleRoute());
     this.handleRoute();
   },

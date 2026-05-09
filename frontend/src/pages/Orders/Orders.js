@@ -1,3 +1,4 @@
+console.log('Orders.js executing');
 App.registerPage('orders', {
   title: 'Pedidos',
   allowedRoles: ['admin', 'mesero', 'cliente'],
@@ -313,3 +314,4 @@ App.registerPage('orders', {
 };
 
 window.OrdersPage = App.pages.orders;
+console.log('Orders.js done, App.pages.orders:', !!App.pages.orders);
