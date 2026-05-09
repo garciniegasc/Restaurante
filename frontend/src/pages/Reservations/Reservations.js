@@ -144,9 +144,9 @@ App.registerPage('reservations', {
       };
       reservas.push(reserva);
       DB.set('reservas', reservas);
-      App.showToast('Reserva creada exitosamente');
       Modal.close();
       App.renderPage('reservations');
+      App.showToast('Reserva creada exitosamente');
     } catch (e) {
       console.error('Error saving reservation:', e);
       App.showToast('Error al guardar: ' + e.message, 'error');
@@ -158,8 +158,8 @@ App.registerPage('reservations', {
     const reservas = DB.get('reservas') || [];
     const r = reservas.find(res => res.id === Number(id));
     if (r) { r.estado = 'cancelada'; DB.set('reservas', reservas); }
-    App.showToast('Reserva cancelada');
     App.renderPage('reservations');
+    App.showToast('Reserva cancelada');
   },
 });
 

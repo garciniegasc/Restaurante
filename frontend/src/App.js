@@ -122,6 +122,10 @@ const App = {
     document.getElementById('sidebar').classList.remove('open');
   },
 
+  showToast(message, type) {
+    Toast.show(message, type);
+  },
+
   updateSidebarUser(user) {
     if (!user) return;
     document.getElementById('sidebar-avatar').textContent = user.nombre.charAt(0).toUpperCase();

@@ -127,15 +127,14 @@ App.registerPage('menu', {
         id = Number(id);
         const idx = productos.findIndex(p => p.id === id);
         if (idx !== -1) { productos[idx] = { ...productos[idx], ...data }; }
-        App.showToast('Producto actualizado');
       } else {
         data.id = DB.nextId('productos');
         productos.push(data);
-        App.showToast('Producto creado');
       }
       DB.set('productos', productos);
       Modal.close();
       App.renderPage('menu');
+      App.showToast(id ? 'Producto actualizado' : 'Producto creado');
     } catch (e) {
       console.error('Error saving product:', e);
       App.showToast('Error al guardar: ' + e.message, 'error');
@@ -146,8 +145,8 @@ App.registerPage('menu', {
     if (!confirm('¿Eliminar este producto?')) return;
     const productos = DB.get('productos') || [];
     DB.set('productos', productos.filter(p => p.id !== Number(id)));
-    App.showToast('Producto eliminado');
     App.renderPage('menu');
+    App.showToast('Producto eliminado');
   },
 };
 

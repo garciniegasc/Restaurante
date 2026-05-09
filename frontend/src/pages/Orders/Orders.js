@@ -100,8 +100,8 @@ App.registerPage('orders', {
     if (idx === -1) return;
     pedidos[idx].estado = nuevoEstado;
     DB.set('pedidos', pedidos);
-    App.showToast(`Pedido #${id} actualizado a "${nuevoEstado}"`);
     App.renderPage('orders');
+    App.showToast(`Pedido #${id} actualizado a "${nuevoEstado}"`);
   },
 
   create() {
@@ -220,9 +220,9 @@ App.registerPage('orders', {
     const mesa = mesas.find(m => m.id === mesaId);
     if (mesa) { mesa.estado = 'ocupada'; DB.set('mesas', mesas); }
 
-    App.showToast(`Pedido #${pedido.id} creado exitosamente`);
     Modal.close();
     App.renderPage('orders');
+    App.showToast(`Pedido #${pedido.id} creado exitosamente`);
   },
 
   view(id) {
@@ -306,9 +306,9 @@ App.registerPage('orders', {
     };
     facturas.push(factura);
     DB.set('facturas', facturas);
-    App.showToast(`Factura #${factura.id} generada - Total: $${factura.total.toLocaleString()}`);
     Modal.close();
     App.renderPage('orders');
+    App.showToast(`Factura #${factura.id} generada - Total: $${factura.total.toLocaleString()}`);
   },
 };
 

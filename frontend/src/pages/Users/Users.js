@@ -104,16 +104,15 @@ App.registerPage('users', {
           usuarios[idx].email = data.email;
           usuarios[idx].rol = data.rol;
           if (data.password) usuarios[idx].password = data.password;
-          App.showToast('Usuario actualizado');
         }
       } else {
         data.id = DB.nextId('usuarios');
         usuarios.push(data);
-        App.showToast('Usuario creado');
       }
       DB.set('usuarios', usuarios);
       Modal.close();
       App.renderPage('users');
+      App.showToast(id ? 'Usuario actualizado' : 'Usuario creado');
     } catch (e) {
       console.error('Error saving user:', e);
       App.showToast('Error al guardar: ' + e.message, 'error');
@@ -127,8 +126,8 @@ App.registerPage('users', {
     if (!confirm('¿Eliminar este usuario?')) return;
     const usuarios = DB.get('usuarios') || [];
     DB.set('usuarios', usuarios.filter(u => Number(u.id) !== id));
-    App.showToast('Usuario eliminado');
     App.renderPage('users');
+    App.showToast('Usuario eliminado');
   },
 });
 

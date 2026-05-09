@@ -9,7 +9,7 @@ const Auth = {
   },
 
   login(email, password) {
-    const usuarios = DB.get('usuarios');
+    const usuarios = DB.get('usuarios') || [];
     const user = usuarios.find(u => u.email === email && u.password === password);
     if (!user) return { success: false, error: 'Credenciales inválidas' };
     this.currentUser = user;
