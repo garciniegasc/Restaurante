@@ -73,7 +73,9 @@ const App = {
   },
 
   handleRoute(hash) {
+    console.log('handleRoute called, hash arg:', hash, 'location.hash:', location.hash);
     if (!hash) hash = location.hash.slice(1) || 'login';
+    console.log('handleRoute resolved hash:', hash);
     if (hash !== 'login' && !Auth.isAuthenticated()) {
       this.navigate('login');
       return;
@@ -82,6 +84,7 @@ const App = {
   },
 
   navigate(page) {
+    console.log('App.navigate:', page);
     location.hash = page;
   },
 
