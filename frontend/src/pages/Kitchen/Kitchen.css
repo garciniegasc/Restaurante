@@ -1,0 +1,37 @@
+.kitchen-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+.kitchen-card {
+  background: var(--bg-card);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  border-left: 4px solid var(--warning);
+}
+.kitchen-card.preparing { border-left-color: var(--info); }
+.kitchen-card.ready { border-left-color: var(--success); }
+.kitchen-card .order-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 13px;
+  color: var(--text-light);
+}
+.kitchen-card .order-number {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--primary);
+}
+.kitchen-card .order-items { margin: 12px 0; }
+.kitchen-card .order-items li {
+  padding: 4px 0;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px dashed var(--border);
+}
+@media (max-width: 768px) {
+  .kitchen-grid { grid-template-columns: 1fr; }
+}

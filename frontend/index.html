@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es-CO">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIGR - Sistema Integral Gestión Restaurante</title>
+  <!-- ===== STYLES (Modular Architecture) ===== -->
+  <link rel="stylesheet" href="src/styles/variables.css">
+  <link rel="stylesheet" href="src/styles/reset.css">
+  <link rel="stylesheet" href="src/styles/layout.css">
+  <link rel="stylesheet" href="src/styles/components.css">
+  <link rel="stylesheet" href="src/styles/utilities.css">
+  <!-- Page-specific styles -->
+  <link rel="stylesheet" href="src/pages/Login/Login.css">
+  <link rel="stylesheet" href="src/pages/Kitchen/Kitchen.css">
+  <link rel="stylesheet" href="src/components/Modal/Modal.css">
+  <link rel="stylesheet" href="src/components/Toast/Toast.css">
+</head>
+<body>
+  <!-- ===== CORE SERVICES ===== -->
+  <script src="src/services/storage.js"></script>
+  <script src="src/services/auth.js"></script>
+
+  <!-- ===== COMPONENTS ===== -->
+  <script src="src/components/Modal/Modal.js"></script>
+
+  <!-- ===== APP SHELL ===== -->
+  <script src="src/router/index.js"></script>
+  <script src="src/App.js"></script>
+
+  <!-- ===== PAGES ===== -->
+  <script src="src/pages/Login/Login.js"></script>
+  <script src="src/pages/Dashboard/Dashboard.js"></script>
+  <script src="src/pages/Menu/Menu.js"></script>
+  <script src="src/pages/Orders/Orders.js"></script>
+  <script src="src/pages/Kitchen/Kitchen.js"></script>
+  <script src="src/pages/Reservations/Reservations.js"></script>
+  <script src="src/pages/Billing/Billing.js"></script>
+  <script src="src/pages/Reports/Reports.js"></script>
+  <script src="src/pages/Users/Users.js"></script>
+
+  <!-- ===== ENTRY POINT ===== -->
+  <script src="src/main.js"></script>
+</body>
+</html>
